@@ -6,7 +6,7 @@ import com.example.trackerapp.features.action.domain.model.Action
 
 @Database(
     entities = [Action::class],
-    version = 1
+    version = 2
 )
 abstract class ActionDatabase: RoomDatabase() {
 

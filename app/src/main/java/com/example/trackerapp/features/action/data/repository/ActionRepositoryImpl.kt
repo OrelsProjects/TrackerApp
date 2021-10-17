@@ -12,6 +12,10 @@ class ActionRepositoryImpl(
         return dao.getActions()
     }
 
+    override fun getActions1(): List<Action> {
+        return dao.getActions1()
+    }
+
     override suspend fun getActionById(actionID: String): Action? {
         return dao.getActionById(actionID)
     }

@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ActionDao {
 
-    @Query("SELECT * FROM `Action`")
+    @Query("SELECT * FROM action")
     fun getActions(): Flow<List<Action>>
 
-    @Query("SELECT * FROM `Action` WHERE id=:actionID ")
+    @Query("SELECT * FROM action WHERE actionId=:actionID ")
     suspend fun getActionById(actionID: String): Action
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -18,4 +18,7 @@ interface ActionDao {
 
     @Delete
     suspend fun deleteAction(action: Action)
+
+    @Query("SELECT * FROM action")
+    fun getActions1(): List<Action>
 }

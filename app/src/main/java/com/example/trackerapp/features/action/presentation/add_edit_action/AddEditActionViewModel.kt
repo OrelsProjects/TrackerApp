@@ -7,11 +7,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trackerapp.features.action.domain.model.Action
+import com.example.trackerapp.features.action.domain.model.InvalidActionException
 import com.example.trackerapp.features.action.domain.use_case.ActionUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,14 +42,14 @@ class AddEditActionViewModel @Inject constructor(
     )
     val actionDescription: State<ActionTextFieldState> = _actionDescription
 
-    private var currentActionId: String = ""
+    private var currentActionId: String = "${Date().time}"
 
     init {
         savedStateHandle.get<String>("actionId")?.let { actionId ->
             if (actionId != "") {
                 viewModelScope.launch {
                     actionUseCases.getActionById(actionId)?.also { action ->
-                        currentActionId = action.id
+                        currentActionId = action.actionId
                         _actionTitle.value = actionTitle.value.copy(
                             text = action.title,
                             isHintVisible = false
@@ -102,11 +104,11 @@ class AddEditActionViewModel @Inject constructor(
                                 title = actionTitle.value.text,
                                 description = actionTitle.value.text,
                                 color = actionColor.value,
-                                id = currentActionId
+                                actionId = currentActionId
                             )
                         )
                         _eventFlow.emit(UiEvent.SaveAction)
-                    } catch (exception: Action.InvalidActionException) {
+                    } catch (exception: InvalidActionException) {
                         _eventFlow.emit(
                             UiEvent.ShowSnackbar(
                                 message = exception.message ?: "Couldn't save the action"

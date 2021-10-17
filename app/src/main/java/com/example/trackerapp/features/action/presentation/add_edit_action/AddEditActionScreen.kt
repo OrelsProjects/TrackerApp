@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun AddEditActionScreen(
     navController: NavController,
-    noteColor: Int,
+    actionColor: Int,
     viewModel: AddEditActionViewModel = hiltViewModel()
 ) {
     val scaffoldState = rememberScaffoldState()
@@ -40,7 +40,7 @@ fun AddEditActionScreen(
 
     val noteBackgroundAnimatable = remember {
         Animatable(
-            Color(if (noteColor != -1) noteColor else viewModel.actionColor.value)
+            Color(if (actionColor != -1) actionColor else viewModel.actionColor.value)
         )
     }
     LaunchedEffect(key1 = true) {

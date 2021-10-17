@@ -17,23 +17,25 @@ import javax.inject.Singleton
 object AppModule {
     @Provides
     @Singleton
-    fun provideActionDatabase(app:Application): ActionDatabase{
+    fun provideActionDatabase(app: Application): ActionDatabase {
         return Room.databaseBuilder(
             app,
             ActionDatabase::class.java,
             ActionDatabase.DATABASE_NAME
-        ).build()
+        ).fallbackToDestructiveMigration()
+            .build()
+
     }
 
     @Provides
     @Singleton
-    fun provideActionRepository(db: ActionDatabase): ActionRepository{
+    fun provideActionRepository(db: ActionDatabase): ActionRepository {
         return ActionRepositoryImpl(db.actionDao)
     }
 
     @Provides
     @Singleton
-    fun provideActionUseCases(repository: ActionRepository): ActionUseCases{
+    fun provideActionUseCases(repository: ActionRepository): ActionUseCases {
         return ActionUseCases(
             getActions = GetActions(repository),
             getActionById = GetActionById(repository),

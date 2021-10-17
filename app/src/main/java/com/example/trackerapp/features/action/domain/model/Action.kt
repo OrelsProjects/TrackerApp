@@ -11,10 +11,11 @@ data class Action(
     val description: String,
     val color: Int,
     val timeCreatedInMillis: Long = Calendar.getInstance().timeInMillis,
-    @PrimaryKey val id: String = ""
+    @PrimaryKey val actionId: String = ""
 ) {
     companion object {
         val actionColors = listOf(RedOrange, LightGreen, Violet, BabyBlue, RedPink)
     }
-    class InvalidActionException(message: String): Exception(message)
 }
+
+class InvalidActionException(message: String) : Exception(message)
